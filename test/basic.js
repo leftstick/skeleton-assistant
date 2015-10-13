@@ -14,20 +14,55 @@ try {
 
 describe('basic test', function() {
 
-    var src = path.resolve(__dirname, 'logo');
     var dest = path.resolve(__dirname, 'tmp');
-    var destPath = path.resolve(dest, 'Alert.js');
     var date = new Date().format('mmm d, yyyy');
 
-    it('simple generate', function(done) {
-        ass({name: 'alert', dest: dest, enableInquirer: false});
-        should(fs.readFileSync(destPath, {encoding: 'utf8'})).eql('/**\n *  Defines the alert\n *\n *  @author  haozuo\n *  @date    Oct 13, 2015\n *\n */\nimport FeatureBase from \'lib/FeatureBase\';\n\nclass Feature extends FeatureBase {\n    constructor() {\n        super(\'alert\');\n    }\n\n    beforeStart() {}\n\n    run() {}\n}\n\nexport default Feature;\n', 'content is incorrect');
+    it('simple generate CommonFeature', function(done) {
+        var destPath = path.resolve(dest, 'Alert.js');
+        ass({name: 'alert', dest: dest});
+        should(fs.readFileSync(destPath, {encoding: 'utf8'})).eql('/**\n *  Defines the alert\n *\n *  @author  ' + username + '\n *  @date    ' + date + '\n *\n */\n\'use strict\';\nimport Base from \'lib/FeatureBase\';\n\nclass Feature extends Base {\n    constructor() {\n        super(\'alert\');\n    }\n\n    beforeStart() {}\n\n    run() {}\n}\n\nexport default Feature;\n', 'content is incorrect');
+        done();
+    });
+
+    it('simple generate LogicalController', function(done) {
+        var destPath = path.resolve(dest, 'HomeController.js');
+        ass({
+            name: 'home',
+            dest: dest,
+            sourceType: 'LogicalController',
+            model: 'commonjs'
+        });
+        should(fs.readFileSync(destPath, {encoding: 'utf8'})).eql('/**\n *  Defines the HomeController controller\n *\n *  @author  ' + username + '\n *  @date    ' + date + '\n *\n */\n\'use strict\';\n\n/**\n * @constructor\n */\nvar HomeController = function($scope) {\n\n    $scope.$on(\'$destroy\', function() {});\n};\n\nmodule.exports = [\n    \'$scope\',\n    HomeController\n];\n', 'content is incorrect');
+        done();
+    });
+
+    it('simple generate LogicalMain', function(done) {
+        var destPath = path.resolve(dest, 'main.js');
+        ass({
+            name: 'home',
+            dest: dest,
+            sourceType: 'LogicalMain',
+            model: 'amd'
+        });
+        should(fs.readFileSync(destPath, {encoding: 'utf8'})).eql('/**\n *\n *   Defines a home feature\n *\n *  @author  ' + username + '\n *  @date    ' + date + '\n *\n */\ndefine([\'lib/FeatureBase\'], function(Base) {\n    \'use strict\';\n\n    var Feature = function() {\n        Base.call(this, \'home\');\n    };\n\n    Feature.prototype = new Base();\n\n    Feature.prototype.constructor = Feature;\n\n    Feature.prototype.run = function() {};\n\n    return Feature;\n});\n', 'content is incorrect');
+        done();
+    });
+
+    it('simple generate Routes', function(done) {
+        var destPath = path.resolve(dest, 'Routes.js');
+        ass({
+            name: 'home',
+            dest: dest,
+            sourceType: 'Routes',
+            model: 'commonjs'
+        });
+        should(fs.readFileSync(destPath, {encoding: 'utf8'})).eql('/**\n *\n *  Routes module expose route information used in home feature\n *\n *  @author  ' + username + '\n *  @date    ' + date + '\n *\n */\n\'use strict\';\nvar tpl = require(\'./partials/home.html\');\n\nmodule.exports = [\n    {\n        id: \'home\',\n        isDefault: false,\n        when: \'/home\',\n        controller: \'HomeController\',\n        template: tpl\n    }\n];\n', 'content is incorrect');
         done();
     });
 
     afterEach(function() {
         try {
-            // rimraf.sync(dest);
+            rimraf.sync(dest);
         } catch (e) {}
     });
 
