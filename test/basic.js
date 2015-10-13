@@ -16,12 +16,12 @@ describe('basic test', function() {
 
     var src = path.resolve(__dirname, 'logo');
     var dest = path.resolve(__dirname, 'tmp');
-    var destPath = path.resolve(__dirname, 'tmp', 'Alert.js');
+    var destPath = path.resolve(dest, 'Alert.js');
     var date = new Date().format('mmm d, yyyy');
 
     it('simple generate', function(done) {
-        ass({name: 'Alert', dest: dest});
-        should(fs.readFileSync(destPath, {encoding: 'utf8'})).eql('/**\n *  Defines the Alert\n *\n *  @author  haozuo\n *  @date    Oct 13, 2015\n *\n */\nimport FeatureBase from \'lib/FeatureBase\';\n\nclass Feature extends FeatureBase {\n    constructor() {\n        super(\'Alert\');\n    }\n\n    beforeStart() {}\n\n    run() {}\n}\n\nexport default Feature;\n', 'content is incorrect');
+        ass({name: 'alert', dest: dest, enableInquirer: false});
+        should(fs.readFileSync(destPath, {encoding: 'utf8'})).eql('/**\n *  Defines the alert\n *\n *  @author  haozuo\n *  @date    Oct 13, 2015\n *\n */\nimport FeatureBase from \'lib/FeatureBase\';\n\nclass Feature extends FeatureBase {\n    constructor() {\n        super(\'alert\');\n    }\n\n    beforeStart() {}\n\n    run() {}\n}\n\nexport default Feature;\n', 'content is incorrect');
         done();
     });
 
