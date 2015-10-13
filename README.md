@@ -20,14 +20,36 @@ npm install skeleton-assistant --save
 ```javascript
 var ass = require('skeleton-assistant');
 
-//programmatically
-ass({sourceType: 'CommonFeature', model: 'es6' name: 'alert', dest: './dist/', enableInquirer: false});
+ass({sourceType: 'CommonFeature', model: 'es6' name: 'alert', dest: './dist/'});
 //A file named: Alert.js will be generated into ./dist/
 
+ass({sourceType: 'LogicalMain', model: 'amd' name: 'home', dest: './dist/'});
+//A file named: main.js will be generated into ./dist/
 
-//give ui, let user type what they want
-ass({sourceType: 'CommonFeature', model: 'es6' name: 'alert', dest: './dist/', enableInquirer: true});
+ass({sourceType: 'Routes', model: 'commonjs' name: 'myfavorites', dest: './dist/'});
+//A file named: Routes.js will be generated into ./dist/
+
+ass({sourceType: 'LogicalController', model: 'commonjs' name: 'home', dest: './dist/'});
+//A file named: HomeController.js will be generated into ./dist/
 ```
+
+## ass(options) ##
+
+### options.sourceType
+
+Available choices are: [CommonFeature, LogicalController, LogicalMain, Routes]
+
+### options.model
+
+Available choices are: [es6, amd, commonjs]
+
+### options.name
+
+Module name
+
+### options.dest
+
+Output folder
 
 ## LICENSE ##
 
