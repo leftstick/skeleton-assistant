@@ -1,6 +1,6 @@
 {
   "name": "skeleton-assistant",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "It's an helper library for generator-es6/commonjs/amd-angular",
   "main": "./index.js",
   "scripts": {

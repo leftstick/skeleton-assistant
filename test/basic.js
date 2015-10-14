@@ -32,7 +32,7 @@ describe('basic test', function() {
             sourceType: 'LogicalController',
             model: 'commonjs'
         });
-        should(fs.readFileSync(destPath, {encoding: 'utf8'})).eql('/**\n *  Defines the HomeController controller\n *\n *  @author  ' + username + '\n *  @date    ' + date + '\n *\n */\n\'use strict\';\n\n/**\n * @constructor\n */\nvar HomeController = function($scope) {\n\n    $scope.$on(\'$destroy\', function() {});\n};\n\nmodule.exports = [\n    \'$scope\',\n    HomeController\n];\n', 'content is incorrect');
+        should(fs.readFileSync(destPath, {encoding: 'utf8'})).eql('/**\n *  Defines the HomeController controller\n *\n *  @author  ' + username + '\n *  @date    ' + date + '\n *\n */\n\'use strict\';\nvar HomeController = function($scope) {\n\n    $scope.$on(\'$destroy\', function() {});\n};\n\nmodule.exports = [ \'$scope\', HomeController ];\n', 'content is incorrect');
         done();
     });
 
