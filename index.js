@@ -38,7 +38,6 @@ var helper = function(options) {
         logger.warning('You must set "name"');
         return;
     }
-    opts.name = opts.name.toLowerCase();
     if (!opts.dest) {
         logger.warning('You must set "dest"');
         return;
