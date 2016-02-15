@@ -5,6 +5,8 @@ It's an helper library for generator-es6/commonjs/amd-angular
 [![NPM version][npm-image]][npm-url]
 ![][david-url]
 ![][travis-url]
+![][dt-url]
+![][license-url]
 
 Generate code base for [generator-es6-angular](https://github.com/leftstick/generator-es6-angular)/[generator-amd-angular](https://github.com/leftstick/generator-amd-angular).
 
@@ -62,3 +64,5 @@ Output folder
 [npm-image]: https://badge.fury.io/js/skeleton-assistant.png
 [david-url]: https://david-dm.org/leftstick/skeleton-assistant.png
 [travis-url]:https://api.travis-ci.org/leftstick/skeleton-assistant.svg?branch=master
+[dt-url]:https://img.shields.io/npm/dt/skeleton-assistant.svg
+[license-url]:https://img.shields.io/npm/l/skeleton-assistant.svg

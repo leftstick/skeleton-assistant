@@ -14,50 +14,63 @@ var availableSourceType = [
     'Routes'
 ];
 
-var defaults = {sourceType: 'CommonFeature', model: 'es6'};
+var nameGenerator = {
+    CommonFeature: function(raw){
+        return _.capitalize(raw) + '.js';
+    },
+    LogicalController: function(raw){
+        return _.capitalize(raw) + 'Controller.js';
+    },
+    LogicalMain: function(raw){
+        return 'main.js';
+    },
+    Routes: function(raw){
+        return 'Routes.js';
+    }
+};
 
-var helper = function(options) {
-    var opts = _.defaults({}, options, defaults);
+var getUsername = function(){
+    try {
+        return process.env.USER || process.env.USERPROFILE.split(path.sep)[2];
+    }catch (e){
+        return '';
+    }
+};
+
+var validate = function(opts){
+    if (availableSourceType.indexOf(opts.sourceType) < 0){
+        return logger.warning('The "sourceType" you set is incorrect, available options are [CommonFeature]');
+    }
+    if (availableModels.indexOf(opts.model) < 0){
+        return logger.warning('The "model" you set is incorrect, available options are [es6, commonjs, amd]');
+    }
+    if (!opts.name){
+        return logger.warning('You must set "name"');
+    }
+    if (!opts.dest){
+        return logger.warning('You must set "dest"');
+    }
+    return true;
+};
+
+var defaults = { sourceType: 'CommonFeature', model: 'es6' };
+
+var helper = function(options){
+    var opts = _.defaults({ }, options, defaults);
 
     opts.date = new Date().format('mmm d, yyyy');
-    try {
-        opts.username = process.env.USER || process.env.USERPROFILE.split(path.sep)[2];
-    } catch (e) {
-        opts.username = '';
-    }
+    opts.username = getUsername();
 
-    if (availableSourceType.indexOf(opts.sourceType) < 0) {
-        logger.warning('The "sourceType" you set is incorrect, available options are [CommonFeature]');
-        return;
-    }
-    if (availableModels.indexOf(opts.model) < 0) {
-        logger.warning('The "model" you set is incorrect, available options are [es6, commonjs, amd]');
-        return;
-    }
-    if (!opts.name) {
-        logger.warning('You must set "name"');
-        return;
-    }
-    if (!opts.dest) {
-        logger.warning('You must set "dest"');
+    if (!validate(opts)){
         return;
     }
 
-    var destFileName;
-    if (opts.sourceType === 'CommonFeature') {
-        destFileName = _.capitalize(opts.name) + '.js';
-    } else if (opts.sourceType === 'LogicalController') {
-        destFileName = _.capitalize(opts.name) + 'Controller.js';
-    } else if (opts.sourceType === 'LogicalMain') {
-        destFileName = 'main.js';
-    } else if (opts.sourceType === 'Routes') {
-        destFileName = 'Routes.js';
-    }
+    var destFileName = nameGenerator[opts.sourceType](opts.name);
 
     var srcPath = path.resolve(__dirname, 'lib', opts.model, opts.sourceType + '.js');
     var destPath = path.resolve(opts.dest, destFileName);
-    go(srcPath, destPath, function(content) {
-        return _.template(content, {variable: 'answers'})(opts);
+    go(srcPath, destPath, function(content){
+        return _.template(content, { variable: 'answers' })(opts);
     });
     logger.success('[ ' + destPath + ' ] generated!!');
 };
